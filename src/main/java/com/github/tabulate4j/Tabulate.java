@@ -27,6 +27,7 @@ import java.util.List;
  * @author Lorenzo Billi
  */
 public class Tabulate {
+	
 	/**
 	 * List containing the columns of the data. Each columns itself is represented as a list.
 	 */
@@ -101,6 +102,48 @@ public class Tabulate {
 		headers.add(header);
 		if (header.length() + (padding * 2) > columnsLength.get(columnsLength.size() - 1)) {
 			columnsLength.set(columnsLength.size() - 1, header.length() + (padding * 2));
+		}
+	}
+	
+	private List<List<String>> parseContent(String content) {
+		String[] parsedRows = content.split("\n");
+		List<List<String>> rows = new ArrayList<>();
+		for (String pr : parsedRows) {
+			String[] parsedCells = pr.split("\t");
+			List<String> cells = new ArrayList<>();
+			for (String pc : parsedCells) {
+				cells.add(pc);
+			}
+			rows.add(cells);
+		}
+		return rows;
+	}
+	
+	public void addContent(String content) {
+		List<List<String>> rows = parseContent(content);
+		
+		for (int j = 0; j < rows.get(0).size(); j++) {
+			List<String> column = new ArrayList<>();
+			for (int i = 0; i < rows.get(j).size(); i++) {
+				column.add(rows.get(i).get(j));
+			}
+			addColumn(column);
+		}
+	}
+	
+	public void addContent(String headers, String content) {
+		List<List<String>> header = parseContent(headers);
+		List<List<String>> rows = parseContent(content);
+		
+		int n = 0;
+			
+		for (int j = 0; j < rows.get(0).size(); j++) {
+			List<String> column = new ArrayList<>();
+			for (int i = 0; i < rows.get(j).size(); i++) {
+				column.add(rows.get(i).get(j));
+			}
+			addColumn(column, header.get(0).get(n));
+			n++;
 		}
 	}
 	

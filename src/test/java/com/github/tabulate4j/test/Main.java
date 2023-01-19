@@ -14,8 +14,9 @@ public class Main {
 			column2.add("Value " + i);
 		}
 		Tabulate tabulate = new Tabulate();
-		tabulate.addColumn(column1, "Header 1");
-		tabulate.addColumn(column2, "Header 2");
+		//tabulate.addColumn(column1, "Header 1");
+		//tabulate.addColumn(column2, "Header 2");
+		tabulate.addContent("Header 1\tHeader 2\n", "Value 1\tValue 1\nValue 2\tValue 2\nValue 3\tValue 3\n");
 		System.out.println(tabulate.format());
 	}
 }
