@@ -54,7 +54,7 @@ public class Tabulate {
 	private int width;
 	
 	/**
-	 * Creates a new <code>Tabulator</code> with the default padding value of 1.
+	 * Creates a new <code>Tabulate</code> object with the default padding value of 1.
 	 */
 	public Tabulate() {
 		columns = new ArrayList<>();
@@ -65,7 +65,7 @@ public class Tabulate {
 	}
 
 	/**
-	 * Creates a new <code>Tabulator</code> with the specified padding value.
+	 * Creates a new <code>Tabulate</code> object with the specified padding value.
 	 * @param padding Value of the padding. Must be greater or equal than 1.
 	 */
 	public Tabulate(int padding) {
@@ -131,7 +131,7 @@ public class Tabulate {
 		}
 	}
 	
-	public void addContent(String headers, String content) {
+	public void addContent(String content, String headers) {
 		List<List<String>> header = parseContent(headers);
 		List<List<String>> rows = parseContent(content);
 		
@@ -191,9 +191,10 @@ public class Tabulate {
 		computeLength();
 		boolean hasHeader = false;
 		
-		String formatted = "";
+		StringBuilder sb = new StringBuilder();
+		
 		if (columns.get(0).size() == 0) {
-			return formatted;
+			return sb.toString();
 		}
 		
 		String horizontalSeparator = getHorizontalSeparator("-");
@@ -201,36 +202,36 @@ public class Tabulate {
 		
 		if (headers.size() == columns.size()) {
 			hasHeader = true;
-			formatted += getHorizontalSeparator("=");
+			sb.append(getHorizontalSeparator("="));
 			for (int i = 0; i < headers.size(); i++) {
-				formatted += "|";
+				sb.append("|");
 				String content = padding + headers.get(i) + padding;
-				formatted += content;
+				sb.append(content);
 				int remaining = columnsLength.get(i) - content.length();
 				while (remaining > 0) {
-					formatted += " ";
+					sb.append(" ");
 					remaining--;
 				}
 			}
-			formatted += "|\n";
+			sb.append("|\n");
 		}
 	
 		for (int i = 0; i < columns.get(0).size(); i++) {
-			formatted += hasHeader && i == 0 ? getHorizontalSeparator("=") : horizontalSeparator;
+			sb.append(hasHeader && i == 0 ? getHorizontalSeparator("=") : horizontalSeparator);
 			for (int j = 0; j < columns.size(); j++) {
-				formatted += "|";
+				sb.append("|");
 				String content = padding + columns.get(j).get(i) + padding;
-				formatted += content;
+				sb.append(content);
 				int remaining = columnsLength.get(j) - content.length();
 				while (remaining > 0) {
-					formatted += " ";
+					sb.append(" ");
 					remaining--;
 				}
 			}
-			formatted += "|\n";
+			sb.append("|\n");
 		}
-		formatted += horizontalSeparator;
+		sb.append(horizontalSeparator);
 		
-		return formatted;
+		return sb.toString();
 	}
 }
