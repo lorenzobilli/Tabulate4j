@@ -54,7 +54,7 @@ public class Tabulate {
 	private int width;
 	
 	/**
-	 * Creates a new <code>Tabulate</code> object with the default padding value of 1.
+	 * Creates a new {@code Tabulate} object with the default padding value of 1.
 	 */
 	public Tabulate() {
 		columns = new ArrayList<>();
@@ -65,7 +65,7 @@ public class Tabulate {
 	}
 
 	/**
-	 * Creates a new <code>Tabulate</code> object with the specified padding value.
+	 * Creates a new {@code Tabulate} object with the specified padding value.
 	 * @param padding Value of the padding. Must be greater or equal than 1.
 	 */
 	public Tabulate(int padding) {
@@ -77,7 +77,7 @@ public class Tabulate {
 	}
 	
 	/**
-	 * Adds a new data column to the <code>Tabulator</code>.
+	 * Adds a new data column to a {@code Tabulate} instance.
 	 * @param column Data column to be added.
 	 */
 	public void addColumn(List<String> column) {
@@ -93,7 +93,7 @@ public class Tabulate {
 	}
 	
 	/**
-	 * Adds a new data column with the specified header to the <code>Tabulator</code>.
+	 * Adds a new data column with the specified header to a {@code Tabulate} instance.
 	 * @param column Data column to be added.
 	 * @param header Header of the data column that is being added.
 	 */
@@ -105,6 +105,13 @@ public class Tabulate {
 		}
 	}
 	
+	/**
+	 * Transform a given string to a {@code List} of {@code List} representing the rows and the single entries of the
+	 * final formatted table.
+	 * @param content String to be parsed. See @see Tabulate#addContent(String) and 
+	 * @see Tabulate#addContent(String, String) for how the string should be formatted in order to be parsed correctly.
+	 * @return A {@code List} of {@code List} representing each table entry by row.
+	 */
 	private List<List<String>> parseContent(String content) {
 		String[] parsedRows = content.split("\n");
 		List<List<String>> rows = new ArrayList<>();
@@ -119,28 +126,69 @@ public class Tabulate {
 		return rows;
 	}
 	
+	/**
+	 * Directly add the entire content of the table as a purposely formatted string.<br>
+	 * Use {@code '\t'} to separate each column value, then use {@code '\n'} to create a new row.<br>
+	 * <p>Example:</p>
+	 * This string:
+	 * <pre>"Value 1\tValue a\nValue 2\tValue b\nValue 3\tValue c\n"</pre>
+	 * Is formatted as:
+	 * <pre>
+	 * +-------------------+
+	 * | Value 1 | Value a |
+	 * +-------------------+
+	 * | Value 2 | Value b |
+	 * +-------------------+
+	 * | Value 3 | Value c |
+	 * +-------------------+
+	 * </pre>
+	 * 
+	 * @param content String containing the content of the table to be formatted.
+	 */
 	public void addContent(String content) {
 		List<List<String>> rows = parseContent(content);
 		
-		for (int j = 0; j < rows.get(0).size(); j++) {
+		for (int i = 0; i < rows.get(0).size(); i++) {
 			List<String> column = new ArrayList<>();
-			for (int i = 0; i < rows.get(j).size(); i++) {
-				column.add(rows.get(i).get(j));
+			for (int j = 0; j < rows.size(); j++) {
+				column.add(rows.get(j).get(i));
 			}
 			addColumn(column);
 		}
 	}
 	
+	/**
+	 * Directly add the entire content of the table and its header as a purposely formatted string.<br>
+	 * Use {@code '\t'} to separate each column value, then use {@code '\n'} to create a new row.<br>
+	 * <p>Example:</p>
+	 * These strings:
+	 * <pre>"Value 1\tValue a\nValue 2\tValue b\nValue 3\tValue c\n"</pre>
+	 * and <pre>"Header 1\tHeader 2\n"</pre>
+	 * Are formatted as:
+	 * <pre>
+	 * +=====================+
+	 * | Header 1 | Header 2 |
+	 * +=====================+
+	 * | Value 1  | Value a  |
+	 * +---------------------+
+	 * | Value 2  | Value b  |
+	 * +---------------------+
+	 * | Value 3  | Value c  |
+	 * +---------------------+
+	 * </pre>
+	 * @param content String containing the content of the table to be formatted.
+	 * @param headers String containing the headers of the table to be added to the columns.
+	 */
 	public void addContent(String content, String headers) {
 		List<List<String>> header = parseContent(headers);
 		List<List<String>> rows = parseContent(content);
 		
 		int n = 0;
 			
-		for (int j = 0; j < rows.get(0).size(); j++) {
+		for (int i = 0; i < rows.get(0).size(); i++) {
 			List<String> column = new ArrayList<>();
-			for (int i = 0; i < rows.get(j).size(); i++) {
-				column.add(rows.get(i).get(j));
+			for (int j = 0; j < rows.size(); j++) {
+				column.add(rows.get(j).get(i));
 			}
 			addColumn(column, header.get(0).get(n));
 			n++;
@@ -148,7 +196,7 @@ public class Tabulate {
 	}
 	
 	/**
-	 * Computes the length of the resulting table by summing all the content of the <code>columnsLength</code> list.
+	 * Computes the length of the resulting table by summing all the content of the {@code columnsLength} list.
 	 */
 	private void computeLength() {
 		for (int length : columnsLength) {
@@ -159,7 +207,8 @@ public class Tabulate {
 	
 	/**
 	 * Gets an horizontal separator element of the correct length, depending on the table size.
-	 * @return A <code>String</code> containing the horizontal separator element.
+	 * @param sepChar The separator character used to generate the horizontal separator.
+	 * @return A {@code String} containing the horizontal separator element.
 	 */
 	private String getHorizontalSeparator(String sepChar) {
 		String separator = "+";
@@ -171,8 +220,8 @@ public class Tabulate {
 	}
 	
 	/**
-	 * Gets a <code>String</code> containing the required amount of spaces in order to create the required padding.
-	 * @return The <code>String</code> containing the padding.
+	 * Gets a {@code String} containing the required amount of spaces in order to create the required padding.
+	 * @return The {@code String} containing the padding.
 	 */
 	private String getPadding() {
 		String padding = "";
@@ -184,7 +233,7 @@ public class Tabulate {
 	
 	/**
 	 * Gets the data as a formatted table.
-	 * @return A <code>String</code> object containing all the formatted data.
+	 * @return A {@code String} object containing all the formatted data.
 	 */
 	@Override
 	public String toString() {
