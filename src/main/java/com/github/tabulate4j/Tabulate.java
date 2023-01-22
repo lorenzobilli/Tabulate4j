@@ -186,7 +186,8 @@ public class Tabulate {
 	 * Gets the data as a formatted table.
 	 * @return A <code>String</code> object containing all the formatted data.
 	 */
-	public String format() {
+	@Override
+	public String toString() {
 		
 		computeLength();
 		boolean hasHeader = false;

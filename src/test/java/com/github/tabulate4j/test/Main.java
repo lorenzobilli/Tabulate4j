@@ -18,13 +18,13 @@ public class Main {
 		tabulate.addColumn(column1, "Header 1");
 		tabulate.addColumn(column2, "Header 2");
 		
-		return tabulate.format();
+		return tabulate.toString();
 	}
 	
 	private static String testAddContentMode() {
 		Tabulate tabulate = new Tabulate();
 		tabulate.addContent("Value 1\tValue 1\nValue 2\tValue 2\nValue 3\tValue 3\n", "Header 1\tHeader 2\n");
-		return tabulate.format();
+		return tabulate.toString();
 	}
 	
 	public static void main(String[] args) {
